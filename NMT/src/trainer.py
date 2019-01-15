@@ -803,9 +803,17 @@ class TrainerMT(MultiprocessingEventLoop):
             'best_metrics': self.best_metrics,
             'best_stopping_criterion': self.best_stopping_criterion,
         }
+        # save latest checkpoint
         checkpoint_path = os.path.join(self.params.dump_path, 'checkpoint.pth')
         logger.info("Saving checkpoint to %s ..." % checkpoint_path)
         torch.save(checkpoint_data, checkpoint_path)
+
+        # save current checkpoint with epoch number
+        checkpoint_path = os.path.join(self.params.dump_path, 'checkpoint.%d.pth' % self.epoch)
+        logger.info("Saving checkpoint to %s ..." % checkpoint_path)
+        torch.save(checkpoint_data, checkpoint_path)
+
+
 
     def reload_checkpoint(self):
         """
